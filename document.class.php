@@ -4,6 +4,7 @@ class document
   public $name;
   public $urls = array();
   
+  public $imageUrls = array();
   public $genre = array();
   public $artists = array();
   public $location;
@@ -14,6 +15,10 @@ class document
     
   function add_url($value) {
     array_push($this->urls, $value);
+  }
+  
+  function add_imageUrl($value) {
+    array_push($this->imageUrls, $value);
   }
   
   function add_genre($value) {
