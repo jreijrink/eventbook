@@ -15,9 +15,11 @@ function findDocuments() {
     // for each document found in the source:
       $doc = new document;
       //How to save document found in the current source
-      $doc->add_metadata("artist", "who");
+      $doc->add_url("http://eventful.com/event/1");
+      $doc->name = "dancefestival";
+      $doc->add_artist("who");
       $doc->description = "bla bla ...";
-      
+            
       $doc = decomposeDocument($doc);
       $doc = multiLabelClassification($doc);
       $doc = clusterDocument($doc);

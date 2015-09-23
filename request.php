@@ -35,12 +35,16 @@ function retrieveFromIndex($query) {
   if($cache != null) {
     return $cache;
   } else {
+    saveToCache($query, $results);
     return $results; 
   }
 }
 
 function retrieveFromCache($query) {
   return null;
+}
+
+function saveToCache($query, $results) {
 }
 
 ?>
