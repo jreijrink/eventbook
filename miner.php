@@ -34,6 +34,9 @@ function findDocuments() {
 }
 
 function decomposeDocument($doc) {
+  $decomposition = new decomposition;
+  $doc = $decomposition->decompose($doc);
+  
   return $doc;
 }
 
