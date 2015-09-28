@@ -4,6 +4,7 @@ require_once('document.class.php');
 //USE THE DATABASE CLASS FOR SQL HANDLING
 require_once('database.class.php');
 require_once('classifier.class.php');
+require_once('decomposition.class.php');
 
 findDocuments();
 
@@ -43,6 +44,8 @@ function decomposeDocument($doc) {
 function multiLabelClassification($doc) {
   $classifier = new classifier;
   $doc = $classifier->classify($doc);
+  
+  echo "TEST";
   
   return $doc;
 }
