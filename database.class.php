@@ -13,6 +13,7 @@ class database
     $servername = "localhost";
     $username = "root";
     $password = "";
+    $database = "test";
 
     // Create connection
     $this->conn = new mysqli($servername, $username, $password);
@@ -21,6 +22,8 @@ class database
     if ($this->conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
+	
+	$this->conn->select_db($database);
   }
   
   public function CloseConnection()
@@ -32,14 +35,14 @@ class database
   public function TestFunction()
   {
     /* Create table doesn't return a resultset */
-    if ($this->conn->query("CREATE TEMPORARY TABLE myCity LIKE City") === TRUE) {
-      printf("Table myCity successfully created.");
+    if ($this->conn->query("INSERT INTO `document`(`name`, `url`) VALUES ('first', 'http://google.com/first')") === TRUE) {
+      printf("Document successfully created.");
     } else {
-      printf("First query failed.");
+      printf("Document query failed.");
     }
 
     /* Select queries return a resultset */
-    if ($result = $this->conn->query("SELECT Name FROM City LIMIT 10")) {
+    if ($result = $this->conn->query("SELECT * FROM `document`")) {
         printf("Select returned %d rows.", $result->num_rows);
 
         /* free result set */
