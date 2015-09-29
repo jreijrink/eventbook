@@ -1,25 +1,36 @@
 <?php
+require_once('porterStemmer.class.php');
+
 class decomposition
-{
+{	
 	public function decompose($doc) {
-		$doc = removeDuplicates($doc);
-
-		$doc = removePunctuation($doc);
+		echo "DECOMPOSE <br/>";
+		echo $doc->description;
+		echo "<br/>";
 		
-		$doc = removeRedundantWords($doc);
+		// Remove capital letters
+		$doc->description = strtolower($doc->description);
 		
-		$doc = stemming($doc);
+		// Remove punctuation
+		$doc->description = preg_replace("/[^a-zA-Z 0-9]+/", " ", $doc->description);
 		
-		return $doc;
-	}
-  
-	function removeDuplicates($doc) {
-	  
-		return $doc;
-	}
-
-	function removePunctuation($doc) {
-	  
+		// Stemming words
+		$newstring = "";
+		$words = explode(" ",$doc->description);
+		foreach ($words as $word) {
+			$newstring .= porterStemmer::Stem($word);
+			$newstring .= " ";
+		}
+		$doc->description = $newstring;
+		echo $doc->description;
+		echo "<br/>";
+		
+		// Remove duplicates
+		$doc->description = implode(' ',array_unique(explode(' ', $doc->description)));
+		echo $doc->description;
+		echo "<br/>";
+		
+		//$doc = removeRedundantWords($doc);
 		return $doc;
 	}
 

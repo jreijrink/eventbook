@@ -20,7 +20,7 @@ function findDocuments() {
       $doc->add_url("http://eventful.com/event/1");
       $doc->name = "dancefestival";
       $doc->add_artist("who");
-      $doc->description = "bla bla ...";
+      $doc->description = "This is a test, for the decompose-test.";
             
       $doc = decomposeDocument($doc);
       $doc = multiLabelClassification($doc);
@@ -36,8 +36,7 @@ function findDocuments() {
 
 function decomposeDocument($doc) {
   $decomposition = new decomposition;
-  //$doc = $decomposition->decompose($doc);
-  
+  $doc = $decomposition->decompose($doc);
   return $doc;
 }
 
@@ -45,7 +44,7 @@ function multiLabelClassification($doc) {
   $classifier = new classifier;
   $doc = $classifier->classify($doc);
   
-  echo "TEST";
+  echo "TESTMC";
   
   return $doc;
 }
