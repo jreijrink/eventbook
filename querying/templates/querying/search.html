@@ -1,0 +1,11 @@
+<p><strong>Search query: </strong>{{ query }}</p>
+
+{% if documents %}
+    <ul>
+    {% for document in documents %}
+        <li><a href="{% url 'detail' document.id %}">{{ document.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No documents are available.</p>
+{% endif %}

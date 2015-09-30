@@ -1,0 +1,37 @@
+<h1>{{ document.title }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<h3>Description</h3>
+<label>{{ document.description }}</label><br />
+
+<h3>Date</h3>
+<label>{{ document.date }}</label><br />
+
+<h3>Location</h3>
+<label>{{ document.location }}</label><br />
+
+<h3>Genres</h3>
+{% for genre in document.genres.all %}
+	<label>{{ genre.name }}</label><br />
+{% endfor %}
+
+<h3>Artists</h3>
+{% for artist in document.artists.all %}
+	<label>{{ artist.name }}</label><br />
+{% endfor %}
+
+<h3>Tags</h3>
+{% for tag in document.tags.all %}
+    <label for="choice{{ forloop.counter }}">{{ tag.name }}</label><br />
+{% endfor %}
+
+<h3>Urls</h3>
+{% for url in document.urls.all %}
+	<label>{{ url.name }}</label><br />
+{% endfor %}
+
+<h3>ImageUrls</h3>
+{% for imageUrl in document.imageUrls.all %}
+	<label>{{ imageUrl.name }}</label><br />
+{% endfor %}
