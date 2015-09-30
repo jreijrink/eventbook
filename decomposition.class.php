@@ -4,12 +4,14 @@ require_once('porterStemmer.class.php');
 class decomposition
 {	
 	public function decompose($text) {
-		echo "DECOMPOSE <br/>";
+		echo "DECOMPOSITION <br/>";
 		echo $text;
 		echo "<br/>";
 		
 		// Remove capital letters
 		$text = strtolower($text);
+		
+		// Replace contractions
 		
 		// Remove punctuation
 		$text = preg_replace("/[^a-zA-Z 0-9]+/", " ", $text);
@@ -39,6 +41,8 @@ class decomposition
 		echo $text;
 		echo "<br/>";
 		
+		echo "END DECOMPOSITION <br/>";
+		echo "<br/>";
 		return $text;
 	}
 }
