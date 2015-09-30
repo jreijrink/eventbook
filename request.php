@@ -3,6 +3,7 @@
 require_once('document.class.php');
 //USE THE DATABASE CLASS FOR SQL HANDLING
 require_once('database.class.php');
+require_once('decomposition.class.php');
 
 $query = $_GET["query"];
 
