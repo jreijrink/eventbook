@@ -12,6 +12,8 @@ $query = decomposeQuery($query);
 $query = applySearchHistory($query);
 $results = retrieveFromIndex($query);
 
+echo $query;
+
 //Create the results page
 
 
