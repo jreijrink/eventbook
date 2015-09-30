@@ -22,7 +22,9 @@ function checkSpelling($query) {
 }
 
 function decomposeQuery($query) {
-  return $query;
+	$decomposition = new decomposition;
+	$query = $decomposition->decompose($query);
+	return $query;
 }
 
 function applySearchHistory($query) {

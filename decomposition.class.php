@@ -3,45 +3,43 @@ require_once('porterStemmer.class.php');
 
 class decomposition
 {	
-	public function decompose($doc) {
+	public function decompose($text) {
 		echo "DECOMPOSE <br/>";
-		echo $doc->description;
+		echo $text;
 		echo "<br/>";
 		
 		// Remove capital letters
-		$doc->description = strtolower($doc->description);
+		$text = strtolower($text);
 		
 		// Remove punctuation
-		$doc->description = preg_replace("/[^a-zA-Z 0-9]+/", " ", $doc->description);
+		$text = preg_replace("/[^a-zA-Z 0-9]+/", " ", $text);
+		
+		//$doc = removeRedundantWords($doc);
+		$redundantWords = array("the", "that", "to", "as", "there", "has", "and", "or", "is", "not", "a", "of", "but", "in", "by", "on", "are", "it", "if");
+		foreach ($redundantWords as &$word) {
+			$word = '/\b' . preg_quote($word, '/') . '\b/';
+		}
+		$text = preg_replace($redundantWords, '', $text);
+		echo $text;
+		echo "<br/>";
 		
 		// Stemming words
-		$newstring = "";
-		$words = explode(" ",$doc->description);
+		$newtext = "";
+		$words = explode(" ",$text);
 		foreach ($words as $word) {
-			$newstring .= porterStemmer::Stem($word);
-			$newstring .= " ";
+			$newtext .= porterStemmer::Stem($word);
+			$newtext .= " ";
 		}
-		$doc->description = $newstring;
-		echo $doc->description;
+		$text = $newtext;
+		echo $text;
 		echo "<br/>";
 		
 		// Remove duplicates
-		$doc->description = implode(' ',array_unique(explode(' ', $doc->description)));
-		echo $doc->description;
+		$text = implode(' ',array_unique(explode(' ', $text)));
+		echo $text;
 		echo "<br/>";
 		
-		//$doc = removeRedundantWords($doc);
-		return $doc;
-	}
-
-	function removeRedundantWords($doc) {
-	  
-		return $doc;
-	}
-
-	function stemming($doc) {
-	  
-		return $doc;
+		return $text;
 	}
 }
 ?>
