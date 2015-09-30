@@ -1,5 +1,5 @@
 """
-Django settings for Eventbook project.
+Django settings for eventbook project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -66,9 +66,9 @@ TEMPLATES = [
     },
 ]
 
-ROOT_URLCONF = 'Eventbook.urls'
+ROOT_URLCONF = 'eventbook.urls'
 
-WSGI_APPLICATION = 'Eventbook.wsgi.application'
+WSGI_APPLICATION = 'eventbook.wsgi.application'
 
 
 # Database
