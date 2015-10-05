@@ -11,7 +11,7 @@ def findDocuments():
     document = NewDocument()
 
     document.title = "Festival Title"
-    document.description = "Festival description.."
+    document.description = "This isn't a Festival title, but it's a Festival description...!"
     document.date = "01-01-2016"
     document.location = "New York"
     
@@ -27,7 +27,7 @@ def findDocuments():
     document.urls.append("http://eventful.com/event/12")
     document.imageUrls.append("http://eventful.com/event/12/logo.jpg")
     
-    document = decomposeDocument(document);
+    document.description = decomposeDocument(document.description);
     document = multiLabelClassification(document);
     document = clusterDocument(document);
     document = findDuplicate(document);
