@@ -4,12 +4,18 @@ from itertools import chain
 from querying.chaching import retrieveFromCache
 from querying.chaching import saveToCache
 
+import logging
+logger = logging.getLogger("eventbook")
+
 def retrieveFromIndex(query):
     cache = retrieveFromCache(query)
   
     if cache is not None:
+        logger.debug('Cache contained results for this query!')
         return cache;
     else:
+        logger.debug('No results in cache')
+        
         documents = set()
         restultDocument = Document.objects.none()
         
