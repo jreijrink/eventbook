@@ -11,7 +11,7 @@ def findDocuments():
     document = NewDocument()
 
     document.title = "Festival Title"
-    document.description = "This isn't a Festival title, but it's a Festival description...!"
+    document.description = "This isn't a Festival title, but it's a Festival description...! cars"
     document.date = "01-01-2016"
     document.location = "New York"
     
