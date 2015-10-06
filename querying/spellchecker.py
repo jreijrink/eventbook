@@ -1,3 +1,4 @@
+#taken from http://norvig.com/spell-correct.html
 import re, collections
 
 def words(text): return re.findall('[a-z]+', text.lower())
@@ -8,7 +9,7 @@ def train(features):
         model[f] += 1
     return model
 
-NWORDS = train(words(open('big.txt').read()))
+NWORDS = train(words(open('querying/big.txt',"r",encoding='utf-8').read()))
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
