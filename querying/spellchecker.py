@@ -1,5 +1,7 @@
 #taken from http://norvig.com/spell-correct.html
 import re, collections
+import os
+module_dir = os.path.dirname(__file__)  # get current directory
 
 def words(text): return re.findall('[a-z]+', text.lower())
 
@@ -9,7 +11,7 @@ def train(features):
         model[f] += 1
     return model
 
-NWORDS = train(words(open('querying/big.txt',"r",encoding='utf-8').read()))
+NWORDS = train(words(open(os.path.join(module_dir, 'big.txt'),"r",encoding='utf-8').read()))
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
