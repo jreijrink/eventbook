@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 
-from querying.spelchecker import checkSpelling
+from querying.spellchecker import checkSpelling
 from querying.decomposition import decompose
 from querying.searchhistory import applySearchHistory
 from querying.indexer import retrieveFromIndex
