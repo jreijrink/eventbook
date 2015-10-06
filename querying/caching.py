@@ -5,9 +5,9 @@ import hashlib
 import logging
 logger = logging.getLogger("eventbook")
 
-def retrieveFromCache(query):    
+def retrieveFromCache(query):
     key = hashlib.sha256(query).hexdigest()
-    logger.debug('Query key for \'' + query + '\': ' + key)
+    logger.debug('Query key for \'' + str(query) + '\': ' + key)
     result = cache.get(key)
     
     if result is not None:

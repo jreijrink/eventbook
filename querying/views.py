@@ -17,7 +17,7 @@ def index(request):
 def search(request):
     start = time.time()
     query = request.GET.get('q', '')
-    
+
     query = checkSpelling(query)
     query = decompose(query)
     query = applySearchHistory(query)

@@ -1,2 +1,2 @@
 def applySearchHistory(query):
-    return query + "[history added]"
+    return str(query) + "[history added]"

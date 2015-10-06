@@ -1,8 +1,8 @@
 from common.models import Document, Tag
 from itertools import chain
 
-from querying.chaching import retrieveFromCache
-from querying.chaching import saveToCache
+from querying.caching import retrieveFromCache
+from querying.caching import saveToCache
 
 import logging
 logger = logging.getLogger("eventbook")
@@ -12,7 +12,7 @@ def retrieveFromIndex(query):
   
     if cache is not None:
         logger.debug('Cache contained results for this query!')
-        return cache;
+        return cache
     else:
         logger.debug('No results in cache')
         
