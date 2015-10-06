@@ -1,2 +1,2 @@
 def decompose(query):
-    return query + " [decomposed]"
+    return str(query) + " [decomposed]"
