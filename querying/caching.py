@@ -6,8 +6,9 @@ import logging
 logger = logging.getLogger("eventbook")
 
 def retrieveFromCache(query):
-    key = hashlib.sha256(query).hexdigest()
-    logger.debug('Query key for \'' + str(query) + '\': ' + key)
+    something = hashlib.sha256(query.encode('utf-8'))
+    key = something.hexdigest().encode('utf-8')
+    #logger.debug('Query key for \'' + str(query) + '\': ' + key)
     result = cache.get(key)
     
     if result is not None:
@@ -19,5 +20,5 @@ def retrieveFromCache(query):
 
 def saveToCache(query, documents):
     logger.debug('Save query: \'' + query + '\' in cache with ' + str(len(documents)) + ' documents')    
-    key = hashlib.sha256(query).hexdigest()
+    key = hashlib.sha256(query.encode('utf-8')).hexdigest().encode('utf-8')
     cache.set(key, documents, None)

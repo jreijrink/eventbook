@@ -37,5 +37,5 @@ def checkSpelling(query):
     for i in range(len(query_decomposed)):
         query_decomposed[i] = correct(query_decomposed[i])
 
-    return " ".join(query_decomposed)
+    return " ".join(query_decomposed) + "[checked spelling]"
 
