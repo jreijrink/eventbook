@@ -1,4 +1,4 @@
-from common.models import Document, Tag
+from common.models import Document, Token
 from itertools import chain
 
 from querying.caching import retrieveFromCache
@@ -22,15 +22,15 @@ def retrieveFromIndex(query):
         words = query.split()
         
         for word in words:
-            #tags = Tag.objects.filter(name__iexact=word)
-            tags = Tag.objects.filter(name__contains=word)
-            for tag in tags:
-                titleResults = tag.title_tag.all()
-                dateRestuls = tag.date_tags.all()
-                locationRestuls = tag.location_tag.all()
-                genreRestuls = tag.genres_tags.all()
-                artisRestuls = tag.artist_tags.all()
-                tagRestuls = tag.tag_tags.all()
+            tokens = Token.objects.filter(name__iexact=word)
+            #tokens = Token.objects.filter(name__contains=word)
+            for token in tokens:
+                titleResults = token.title_tokens.all()
+                dateRestuls = token.date_tokens.all()
+                locationRestuls = token.location_tokens.all()
+                genreRestuls = token.genres_tokens.all()
+                artisRestuls = token.artist_tokens.all()
+                tagRestuls = token.tag_tokens.all()
                 
                 restultDocument = chain(restultDocument, titleResults, dateRestuls, locationRestuls, genreRestuls, artisRestuls, tagRestuls)
 

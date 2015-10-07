@@ -4,7 +4,7 @@
 {% if documents %}
     <ul>
     {% for document in documents %}
-        <li><a href="{% url 'detail' document.id %}">{{ document.title }}</a></li>
+        <li><a href="{% url 'detail' document.id %}">{{ document }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

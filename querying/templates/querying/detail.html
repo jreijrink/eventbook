@@ -1,15 +1,24 @@
-<h1>{{ document.title }}</h1>
+<h1>{{ document }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<h3>Title</h3>
+{% for title in document.title.all %}
+    <label for="choice{{ forloop.counter }}">{{ title.name }}</label><br />
+{% endfor %}
 
 <h3>Description</h3>
 <label>{{ document.description }}</label><br />
 
 <h3>Date</h3>
-<label>{{ document.date }}</label><br />
+{% for date in document.date.all %}
+    <label for="choice{{ forloop.counter }}">{{ date.name }}</label><br />
+{% endfor %}
 
 <h3>Location</h3>
-<label>{{ document.location }}</label><br />
+{% for location in document.location.all %}
+    <label for="choice{{ forloop.counter }}">{{ location.name }}</label><br />
+{% endfor %}
 
 <h3>Genres</h3>
 {% for genre in document.genres.all %}

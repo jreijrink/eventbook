@@ -1,5 +1,7 @@
 from django.db import models
- 
+from common.tokenizer import getTokensFromText
+from common.tokenizer import getTokensFromList
+
 class NewDocument(object):
     title = None
     description = None
@@ -9,42 +11,52 @@ class NewDocument(object):
     artists = list()
     tags = list()
     urls = list()
-    imageUrls = list()  
+    imageUrls = list()
     
     def save(self, *args, **kwargs):
-        document = Document()
         
-        titleTag = Tag(self.title)
-        titleTag.save()
-        document.title = titleTag
+        document = Document()
         
         document.description = self.description
         
-        dateTag = Tag(self.date)
-        dateTag.save()
-        document.date = dateTag
-        
-        locationTag = Tag(self.location)
-        locationTag.save()
-        document.location = locationTag
-        
         document.save()
         
-        for genre in self.genres:
-            genreTag = Tag(genre)
-            genreTag.save()
-            document.genres.add(genreTag)
+        titleTokens = getTokensFromText(self.title)
+        for title in titleTokens:
+            titleToken = Token(title)
+            titleToken.save()
+            document.title.add(titleToken)
+        
+        dateTokens = getTokensFromText(self.date)
+        for date in dateTokens:
+            dateToken = Token(date)
+            dateToken.save()
+            document.date.add(dateToken)
+                
+        locationTokens = getTokensFromText(self.location)
+        for location in locationTokens:
+            locationToken = Token(location)
+            locationToken.save()
+            document.location.add(locationToken)
             
-        for artist in self.artists:
-            artistTag = Tag(artist)
-            artistTag.save()
-            document.artists.add(artistTag)
+        genreTokens = getTokensFromList(self.genres)
+        for genre in genreTokens:
+            genreToken = Token(genre)
+            genreToken.save()
+            document.genres.add(genreToken)
             
-        for tag in self.tags:
-            tagTag = Tag(tag)
-            tagTag.save()
-            document.tags.add(tagTag)
+        artistTokens = getTokensFromList(self.artists)
+        for artist in artistTokens:
+            artistToken = Token(artist)
+            artistToken.save()
+            document.artists.add(artistToken)
             
+        tagTokens = getTokensFromList(self.tags)
+        for tag in tagTokens:
+            tagToken = Token(tag)
+            tagToken.save()
+            document.tags.add(tagToken)
+
         for url in self.urls:
             urlUrl = Url(url)
             urlUrl.save()
@@ -57,7 +69,7 @@ class NewDocument(object):
         
         document.save
     
-class Tag(models.Model):
+class Token(models.Model):
     name = models.CharField(max_length=200, primary_key=True)
     
     def __str__(self):
@@ -70,22 +82,21 @@ class Url(models.Model):
     def __str__(self):
         return self.name
 
-
 class Document(models.Model):
-    title = models.ForeignKey(Tag, related_name='title_tag')
+    title = models.ManyToManyField(Token, related_name='title_tokens')
     
     description = models.CharField(max_length=1000)
     
-    date = models.ForeignKey(Tag, related_name='date_tags')
-    location = models.ForeignKey(Tag, related_name='location_tag')
+    date = models.ManyToManyField(Token, related_name='date_tokens')
+    location = models.ManyToManyField(Token, related_name='location_tokens')
     
-    genres = models.ManyToManyField(Tag, related_name='genres_tags')
-    artists = models.ManyToManyField(Tag, related_name='artist_tags')
-    tags = models.ManyToManyField(Tag, related_name='tag_tags')
+    genres = models.ManyToManyField(Token, related_name='genres_tokens')
+    artists = models.ManyToManyField(Token, related_name='artist_tokens')
+    tags = models.ManyToManyField(Token, related_name='tag_tokens')
     
     urls = models.ManyToManyField(Url, related_name='url_urls')
     imageUrls = models.ManyToManyField(Url, related_name='image_urls')
 
     def __str__(self):
-        return self.title.name
+        return ' '.join([str(title.name) for title in self.title.order_by("title_tokens")])
     
