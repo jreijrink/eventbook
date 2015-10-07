@@ -31,13 +31,13 @@ def retrieveFromIndex(query):
             tokens = Token.objects.filter(name__iexact=word) 
             #tokens = Token.objects.filter(name__contains=word) 
             for token in tokens: 
-                resultDucument=set()
+                resultDocument=set()
                 titleResults = token.title_tokens.all() 
                 dateResults = token.date_tokens.all() 
                 locationResults = token.location_tokens.all() 
                 genreResults = token.genres_tokens.all() 
                 artistResults = token.artist_tokens.all() 
-                tagResults = token.tag_tokens.all() 
+                tagResults = token.tag_tokens.all()
                  
                 resultDocument = chain(resultDocument, titleResults, dateResults, locationResults, genreResults, artistResults, tagResults) 
 
