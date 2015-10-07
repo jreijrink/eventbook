@@ -20,12 +20,9 @@ def decomposeDocument(text):
     text = regex.sub('', text)
     print(text);
     
-    # Remove duplicate words
-    text = ' '.join(OrderedDict((word,word) for word in text.split()).keys());
-    print(text);
-    
     # Remove stop words (just add words to the list you think also have to be removed)
-    stopWords = ['the','this','that','those','these','to','as','there','has','and','or','is','not','a','an','of','but','in','by','on','are','it','if'];
+    stopWords = ['the','this','that','those','these','to','as','there','has','and','or',
+                 'is','not','a','an','of','but','in','by','on','are','it','if'];
     words = text.split();
     text = ' '.join([i for i in words if i not in stopWords]);
     print(text);
@@ -34,6 +31,10 @@ def decomposeDocument(text):
     lemmatizer = WordNetLemmatizer();
     words = text.split();
     text = ' '.join([lemmatizer.lemmatize(i) for i in words]);
+    print(text);
+    
+    # Remove duplicate words
+    text = ' '.join(OrderedDict((word,word) for word in text.split()).keys());
     print(text);
     
     print("END DECOMPOSITION");
