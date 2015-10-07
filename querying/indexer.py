@@ -23,9 +23,8 @@ def retrieveFromIndex(query):
         print(docnumber) 
         
         Dict={}
-        for document in Document.objects.all():#something wrong
+        for document in Document.objects.all():
             Dict[document]=0.0
-            print(Dict[document])
         
         documents = set() 
         resultDocument = Document.objects.none() 
@@ -56,11 +55,14 @@ def retrieveFromIndex(query):
 
                 for document in documents:
                     Dict[document] +=  idf
+                    print(Dict[document])
+                    
 
         for document in Document.objects.all():
             print(Dict[document])
  
 
- 
-        saveToCache(query, documents); 
-        return documents 
+        Tuple=(documents,Dict)
+        saveToCache(query, documents)
+        
+        return Tuple
