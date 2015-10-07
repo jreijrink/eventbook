@@ -22,9 +22,12 @@ def retrieveFromIndex(query):
          
         docnumber = len(Document.objects.all())
         print(docnumber)
-         
-        documents = set()
-        
+
+        Dict={}
+        for document in Document.objects.all():#something wrong
+            Dict[document]=0.0
+            print(Dict[document])
+           
         words = query.split() 
          
         for word in words: 
@@ -41,7 +44,8 @@ def retrieveFromIndex(query):
                  
                 resultDocument = chain(resultDocument, titleResults, dateResults, locationResults, genreResults, artistResults, tagResults) 
 
- 
+                documents = set()
+
                 for document in resultDocument: 
                     if document not in documents: 
                         documents.add(document) 
@@ -51,6 +55,9 @@ def retrieveFromIndex(query):
                 print(df)
                 idf=math.log((docnumber/df),2)
                 print(idf)
+                
+                for document in documents:
+                    Dict[document] +=  idf
         # TF.IDF here 
         # 
 
