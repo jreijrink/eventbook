@@ -4,6 +4,7 @@ from itertools import chain
 from querying.caching import retrieveFromCache
 from querying.caching import saveToCache
 
+
 import logging
 logger = logging.getLogger("eventbook")
 
@@ -17,7 +18,7 @@ def retrieveFromIndex(query):
         logger.debug('No results in cache')
         
         documents = set()
-        restultDocument = Document.objects.none()
+        resultDocument = Document.objects.none()
         
         words = query.split()
         
@@ -26,20 +27,22 @@ def retrieveFromIndex(query):
             #tokens = Token.objects.filter(name__contains=word)
             for token in tokens:
                 titleResults = token.title_tokens.all()
-                dateRestuls = token.date_tokens.all()
-                locationRestuls = token.location_tokens.all()
-                genreRestuls = token.genres_tokens.all()
-                artisRestuls = token.artist_tokens.all()
-                tagRestuls = token.tag_tokens.all()
+                dateResults = token.date_tokens.all()
+                locationResults = token.location_tokens.all()
+                genreResults = token.genres_tokens.all()
+                artistResults = token.artist_tokens.all()
+                tagResults = token.tag_tokens.all()
                 
-                restultDocument = chain(restultDocument, titleResults, dateRestuls, locationRestuls, genreRestuls, artisRestuls, tagRestuls)
+                resultDocument = chain(resultDocument, titleResults, dateResults, locationResults, genreResults, artistResults, tagResults)
 
-        for document in restultDocument:
+        for document in resultDocument:
             if document not in documents:
                 documents.add(document)
 
         # TF.IDF here
-        
+        #
+
+
         saveToCache(query, documents);
         return documents
     
