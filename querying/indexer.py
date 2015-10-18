@@ -14,15 +14,14 @@ logger = logging.getLogger("eventbook")
 def retrieveFromIndex(query): 
     cache = retrieveFromCache(query) 
    
-    if (cache is not None) and (len(cache) > 0):
+    if (cache is not None) and (len(cache) > 0): 
         logger.debug('Cache contained results for this query!') 
         return cache 
     else: 
         logger.debug('No results in cache') 
         
-        docNumber = len(Document.objects.all())
+        docNumber = len(Document.objects.all())  
         print(docNumber)
-        
         Dicttfidf={}  #save tfidf
         for document in Document.objects.all():
             Dicttfidf[document]=0.0
@@ -32,7 +31,8 @@ def retrieveFromIndex(query):
             Dicttf[document]=0.0
         
         
-        documents = []
+        #documents = set()
+        documents=[]
         resultDocument = Document.objects.none() 
          
         words = query.split() 
@@ -41,7 +41,8 @@ def retrieveFromIndex(query):
             tokens = Token.objects.filter(name__iexact=word) 
             #tokens = Token.objects.filter(name__contains=word) 
             for token in tokens: 
-                resultDocument = []
+                #resultDocument = set()
+                resultDocument=[]
                 titleResults = token.title_tokens.all()
                 for document in titleResults:
                     Dicttf[document]+=1                            
@@ -66,7 +67,7 @@ def retrieveFromIndex(query):
  
                 for document in resultDocument: 
                     if document not in documents: 
-                        documents.add(document) 
+                        documents.append(document) 
                         #print(Dicttf[document])
                         
                 df = len(documents)
