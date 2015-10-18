@@ -21,9 +21,11 @@ def search(request):
     query = checkSpelling(query)
     query = decompose(query)
     query = applySearchHistory(query)
+
+    resultsFromIndexRetrieval = retrieveFromIndex(query)
     
-    documents = (retrieveFromIndex(query))[0]
-    rankings=(retrieveFromIndex(query))[1]  #this is the dictionary for"document<=>idf"
+    documents = resultsFromIndexRetrieval[0]
+    rankings = resultsFromIndexRetrieval[1]  #this is the dictionary for"document<=>idf"
     
     processtime = time.time() - start
     context = {'documents': documents, 'query': query, 'processtime': round(processtime, 4)}
