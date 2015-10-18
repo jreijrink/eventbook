@@ -24,11 +24,19 @@ def search(request):
 
     resultsFromIndexRetrieval = retrieveFromIndex(query)
     
-    documents = resultsFromIndexRetrieval[0]
+    documents = resultsFromIndexRetrieval[0] #list
     rankings = resultsFromIndexRetrieval[1]  #this is the dictionary for"document<=>idf"
     
+    ranklist=sorted(rankings.items(),key=lambda d:d[1],reverse=True)
+    print(ranklist)
+    print(documents)
+    i=0
+    for i in range(0,len(documents)-1):
+        documents[i]=ranklist[i][0]
+
+    
     processtime = time.time() - start
-    context = {'documents': documents, 'query': query, 'processtime': round(processtime, 4)}
+    context = {'documents': documents,'query': query, 'processtime': round(processtime, 4)}
     return render(request, 'querying/search.html', context)
 
 def detail(request, document_id):
