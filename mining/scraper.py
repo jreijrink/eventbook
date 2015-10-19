@@ -1,6 +1,6 @@
 from common.models import NewDocument
 
-from mining.decomposition import decomposeDocument
+from mining.decomposition import decompose
 from mining.classifier import multiLabelClassification
 from mining.clustering import clusterDocument
 from mining.duplication import findDuplicate
@@ -27,7 +27,7 @@ def findDocuments():
     document.urls.append("http://eventful.com/event/12")
     document.imageUrls.append("http://eventful.com/event/12/logo.jpg")
     
-    document.description = decomposeDocument(document.description);
+    document.description = decompose(document.description);
     document = multiLabelClassification(document);
     document = clusterDocument(document);
     document = findDuplicate(document);
