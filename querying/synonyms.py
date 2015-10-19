@@ -12,7 +12,9 @@ def returnSynonyms(text):
     print("ADDING SYNONYMS");
     words = text.split();
     for word in words:
-        text = ' '.join([i for i in lemmalist(word)]);
+        if not lemmalist(word):
+            return text;
+        else: text = ' '.join([i for i in lemmalist(word)]);
     print(text);
     print("SYNONYMS ADDED");
     return text
