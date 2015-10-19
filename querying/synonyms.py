@@ -10,11 +10,14 @@ def lemmalist(str):
 
 def returnSynonyms(text):
     print("ADDING SYNONYMS");
-    words = text.split();
+    subText = text;
+    words = subText.split();
     for word in words:
         if not lemmalist(word):
-            return text;
-        else: text = ' '.join([i for i in lemmalist(word)]);
+            subText = subText;
+        else: subText = ' '.join([i for i in lemmalist(word)]);
+        print(subText);
+        text = text + ' ' + subText;
     print(text);
     print("SYNONYMS ADDED");
     return text
