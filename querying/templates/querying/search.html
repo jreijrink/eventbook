@@ -4,7 +4,7 @@
 {% if documents %}
     <ul>
     {% for document in documents %}
-        <li><a href="{% url 'detail' document.id %}">{{ document }}</a></li>
+        <li><a href="{% url 'detail' document.0.id %}">{{ document.0 }} (rank: {{ document.1|floatformat }})</a></li>
     {% endfor %}
     </ul>
 {% else %}
