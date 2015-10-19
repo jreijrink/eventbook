@@ -22,18 +22,7 @@ def search(request):
     query = decompose(query)
     query = applySearchHistory(query)
 
-    resultsFromIndexRetrieval = retrieveFromIndex(query)
-    
-    documents = resultsFromIndexRetrieval[0] #list
-    rankings = resultsFromIndexRetrieval[1]  #this is the dictionary for"document<=>idf"
-    
-    ranklist=sorted(rankings.items(),key=lambda d:d[1],reverse=True)
-    print(ranklist)
-    print(documents)
-    i=0
-    for i in range(0,len(documents)-1):
-        documents[i]=ranklist[i][0]
-
+    documents = retrieveFromIndex(query)
     
     processtime = time.time() - start
     context = {'documents': documents,'query': query, 'processtime': round(processtime, 4)}

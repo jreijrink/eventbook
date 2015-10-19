@@ -22,27 +22,21 @@ def retrieveFromIndex(query):
         
         docNumber = len(Document.objects.all())  
         print(docNumber)
+        
         Dicttfidf={}  #save tfidf
-        for document in Document.objects.all():
-            Dicttfidf[document]=0.0
-            
         Dicttf={}   #save tf
+        
         for document in Document.objects.all():
-            Dicttf[document]=0.0
-        
-        
-        #documents = set()
-        documents=[]
-        resultDocument = Document.objects.none() 
-         
+            Dicttf[document] = 0.0
+            Dicttfidf[document] = 0.0
+                 
         words = query.split() 
          
         for word in words: 
             tokens = Token.objects.filter(name__iexact=word) 
             #tokens = Token.objects.filter(name__contains=word) 
-            for token in tokens: 
-                #resultDocument = set()
-                resultDocument=[]
+            
+            for token in tokens:                 
                 titleResults = token.title_tokens.all()
                 for document in titleResults:
                     Dicttf[document]+=1                            
@@ -62,30 +56,27 @@ def retrieveFromIndex(query):
                 for document in tagResults:
                     Dicttf[document]+=1 
                  
-                resultDocument = chain(resultDocument, titleResults, dateResults, locationResults, genreResults, artistResults, tagResults) 
-
+                chainedResults = chain(titleResults, dateResults, locationResults, genreResults, artistResults, tagResults) 
  
-                for document in resultDocument: 
+                documents=[]
+                for document in chainedResults: 
                     if document not in documents: 
                         documents.append(document) 
                         #print(Dicttf[document])
                         
                 df = len(documents)
-                idf=math.log((docNumber/df),2)
+                idf = math.log((docNumber / df), 2)
                 
                 for document in documents:
-                    Dicttfidf[document] +=  idf*Dicttf[document]
-                
-                for document in Document.objects.all():
-                    Dicttf[document]=0.0
+                    Dicttfidf[document] +=  idf * Dicttf[document]
+                    Dicttf[document] = 0.0
                     
-                    
-
-        for document in Document.objects.all():
-            print(Dicttfidf[document])
- 
-
-        Tuple=(documents,Dicttfidf)
-        saveToCache(query, documents)
+        ranklist = sorted(Dicttfidf.items(), key=lambda doc : doc[1], reverse=True)
         
-        return Tuple
+        resultDocument= list()
+        for key in ranklist:
+            resultDocument.append(key)
+
+        saveToCache(query, resultDocument)
+        
+        return resultDocument
