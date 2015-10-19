@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 
 from querying.spellchecker import checkSpelling
 from mining.decomposition import decompose
+from querying.synonyms import returnSynonyms
 from querying.searchhistory import applySearchHistory
 from querying.indexer import retrieveFromIndex
 from querying.suggestor import createSuggestions
@@ -19,6 +20,8 @@ def search(request):
     query = request.GET.get('q', '')
 
     query = checkSpelling(query)
+    query = decompose(query)
+    query = returnSynonyms(query)
     query = decompose(query)
     query = applySearchHistory(query)
 
