@@ -3,7 +3,7 @@ from collections import OrderedDict
 from nltk.stem.wordnet import WordNetLemmatizer
 import re, string
 
-def decomposeDocument(text):
+def decompose(text):
     print("DECOMPOSITION");
     print(text);
 
