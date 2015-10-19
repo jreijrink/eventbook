@@ -25,7 +25,7 @@ def search(request):
     documents = retrieveFromIndex(query)
     
     processtime = time.time() - start
-    context = {'documents': documents,'query': query, 'processtime': round(processtime, 4)}
+    context = {'documents': documents, 'query': query, 'processtime': round(processtime, 4)}
     return render(request, 'querying/search.html', context)
 
 def detail(request, document_id):

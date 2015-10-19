@@ -4,7 +4,8 @@ from collections import Counter
  
 from querying.caching import retrieveFromCache 
 from querying.caching import saveToCache 
- 
+from common.tokenizer import getTokensFromText
+
 import re
 import math 
 import logging 
@@ -14,7 +15,7 @@ logger = logging.getLogger("eventbook")
 def retrieveFromIndex(query): 
     cache = retrieveFromCache(query) 
    
-    if (cache is not None) and (len(cache) > 0): 
+    if False: #(cache is not None) and (len(cache) > 0): 
         logger.debug('Cache contained results for this query!') 
         return cache 
     else: 
@@ -30,8 +31,8 @@ def retrieveFromIndex(query):
             Dicttf[document] = 0.0
             Dicttfidf[document] = 0.0
                  
-        words = query.split() 
-         
+        words = query.split()#getTokensFromText(query)
+        
         for word in words: 
             tokens = Token.objects.filter(name__iexact=word) 
             #tokens = Token.objects.filter(name__contains=word) 
@@ -63,20 +64,19 @@ def retrieveFromIndex(query):
                     if document not in documents: 
                         documents.append(document) 
                         #print(Dicttf[document])
-                        
+
                 df = len(documents)
                 idf = math.log((docNumber / df), 2)
                 
                 for document in documents:
-                    Dicttfidf[document] +=  idf * Dicttf[document]
+                    Dicttfidf[document] += idf * Dicttf[document]
                     Dicttf[document] = 0.0
-                    
-        ranklist = sorted(Dicttfidf.items(), key=lambda doc : doc[1], reverse=True)
-        
-        resultDocument= list()
-        for key in ranklist:
-            resultDocument.append(key)
 
-        saveToCache(query, resultDocument)
+        #for map in Dicttfidf.items():
+        #   print(map[1])
+            
+        ranklist = sorted(Dicttfidf.items(), key = lambda map : map[1], reverse=True)
         
-        return resultDocument
+        saveToCache(query, ranklist)
+        
+        return ranklist
