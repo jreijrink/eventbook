@@ -34,7 +34,8 @@ def retrieveFromIndex(query):
         words = query.split()#getTokensFromText(query)
         
         for word in words: 
-            tokens = Token.objects.filter(name__iexact=word) 
+            tokens = Token.objects.filter(name=word)
+            #tokens = Token.objects.filter(name__iexact=word)
             #tokens = Token.objects.filter(name__contains=word) 
             
             for token in tokens:                 
