@@ -6,6 +6,7 @@ from eventbook import settings as eventbook_settings
 def findDuplicate(document):
     
     print("START DUP");
+    print(document.title)
     
     results = []
  
@@ -27,6 +28,7 @@ def findDuplicate(document):
     
     if len(results) > 0:
         document.duplication = findDuplicateInResults(document, results)
+        print(str(document.duplication))
     
     print("END DUP");
     return document

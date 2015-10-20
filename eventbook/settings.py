@@ -96,6 +96,8 @@ USE_TZ = True
 
 DUPLICATION_LIMIT = 0.5
 
+PAGE_SIZE = 10
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
