@@ -1,68 +1,90 @@
 from common.models import Document, Token 
 from itertools import chain 
- 
+from collections import Counter
  
 from querying.caching import retrieveFromCache 
 from querying.caching import saveToCache 
- 
+from common.tokenizer import getTokensFromText
+from eventbook import settings as eventbook_settings
+
+import re
 import math 
 import logging 
 logger = logging.getLogger("eventbook") 
  
  
-def retrieveFromIndex(query): 
+def retrieveFromIndex(query, page): 
     cache = retrieveFromCache(query) 
    
-    if cache is not None: 
+    if False:#(cache is not None) and page == 1:
         logger.debug('Cache contained results for this query!') 
         return cache 
     else: 
         logger.debug('No results in cache') 
         
-        docnumber = len(Document.objects.all())
-        print(docnumber) 
+        docNumber = len(Document.objects.all())
         
-        Dict={}
-        for document in Document.objects.all():
-            Dict[document]=0.0
+        Dicttfidf={}  #save tfidf
+        Dicttf={}   #save tf
         
-        documents = set() 
-        resultDocument = Document.objects.none() 
-         
-        words = query.split() 
-         
-        for word in words: 
-            tokens = Token.objects.filter(name__iexact=word) 
-            #tokens = Token.objects.filter(name__contains=word) 
-            for token in tokens: 
-                resultDocument = set()
-                titleResults = token.title_tokens.all() 
-                dateResults = token.date_tokens.all() 
-                locationResults = token.location_tokens.all() 
-                genreResults = token.genres_tokens.all() 
-                artistResults = token.artist_tokens.all() 
-                tagResults = token.tag_tokens.all() 
+        #for document in Document.objects.all():
+        #    Dicttf[document] = 0.0
+        #    Dicttfidf[document] = 0.0
                  
-                resultDocument = chain(resultDocument, titleResults, dateResults, locationResults, genreResults, artistResults, tagResults) 
-
- 
-                for document in resultDocument: 
-                    if document not in documents: 
-                        documents.add(document) 
-                        
-                df = len(documents)
-                idf=math.log((docnumber/df),2)
-
-                for document in documents:
-                    Dict[document] +=  idf
-                    print(Dict[document])
-                    
-
-        for document in Document.objects.all():
-            print(Dict[document])
- 
-
-        Tuple=(documents,Dict)
-        saveToCache(query, documents)
+        words = query.split()#getTokensFromText(query)
         
-        return Tuple
+        for word in words: 
+            tokens = Token.objects.filter(name=word)
+            #tokens = Token.objects.filter(name__iexact=word)
+            #tokens = Token.objects.filter(name__contains=word) 
+            
+            for token in tokens:                 
+                titleResults = token.title_tokens.all()
+                for document in titleResults:
+                    incement_set(Dicttf, document, 1)                            
+                dateResults = token.date_tokens.all() 
+                for document in dateResults:
+                    incement_set(Dicttf, document, 1)
+                locationResults = token.location_tokens.all() 
+                for document in locationResults:
+                    incement_set(Dicttf, document, 1)
+                genreResults = token.genres_tokens.all() 
+                for document in genreResults:
+                    incement_set(Dicttf, document, 1)
+                artistResults = token.artist_tokens.all() 
+                for document in artistResults:
+                    incement_set(Dicttf, document, 1)
+                tagResults = token.tag_tokens.all() 
+                for document in tagResults:
+                    incement_set(Dicttf, document, 1)
+                 
+                chainedResults = chain(titleResults, dateResults, locationResults, genreResults, artistResults, tagResults) 
+ 
+                documents=[]
+                for document in chainedResults: 
+                    if document not in documents: 
+                        documents.append(document)
+
+                df = len(documents)
+                idf = math.log((docNumber / df), 2)
+                
+                for document in documents:
+                    incement_set(Dicttfidf, document, idf * Dicttf[document])
+                    Dicttf[document] = 0.0
+
+        ranklist = sorted(Dicttfidf.items(), key = lambda map : map[1], reverse=True)
+        
+        resultSize = len(ranklist)
+        pageResults = ranklist[(page - 1) * eventbook_settings.PAGE_SIZE : page * eventbook_settings.PAGE_SIZE ]
+        
+        if page == 1:
+            saveToCache(query, pageResults)
+        
+        return (pageResults, resultSize)
+
+def incement_set(dict_set, key, incemental):
+    if key in dict_set:
+        dict_set[key] += incemental
+    else:
+        dict_set[key] = incemental
+        

@@ -1,12 +1,121 @@
-<p><strong>Search query: </strong>{{ query }}</p>
-<p>({{ processtime }} seconds)</p>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="/static/img/icon.png">
+    <title>Eventbook</title>
+  </head>
+  
+  
+  <body>   
+     
+    <nav class="navbar navbar-default">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+        <div class="container">
+          <div class="navbar-header col-md-2">
+            <a class="navbar-brand logo" href="/">
+              <img src="/static/img/logo.jpg" width="136" height="46">
+            </a>
+          </div>        
+          
+          <div class="col-md-8">
+    
+            <form class="navbar-left searchfield" action="" id="form" method="get">
+              <div class="form-group">
+                <div class="input-group stylish-input-group col-md-12">
+                  <input type="text" class="form-control" placeholder="Search query" name="q" id="q" value="{{ query }}">
+                  <span class="input-group-addon">
+                      <button type="submit">
+                          <span class="glyphicon glyphicon-search"></span>
+                      </button>  
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+        
+          <p class="navbar-text navbar-right processtime col-md-2">({{ processtime }} seconds)</p>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <p class="text-center extendedquery">{{ extendedquery }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </nav>
 
-{% if documents %}
-    <ul>
-    {% for document in documents %}
-        <li><a href="{% url 'detail' document.id %}">{{ document }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No documents are available.</p>
-{% endif %}
+    <div class="container resultContainer">
+      
+    {% if documents %}
+      {% for document in documents %}
+        <div class="row resultrow">
+            <div class="col-md-2 imagecontainer">
+              <img src="{{ document.0.imageUrls.first}}" class="img-rounded" width="100%">
+            </div>
+            <div class="col-md-10">
+              {% for url in document.0.urls.all %}
+                <div class="row">
+                {% if forloop.counter == 1 %}
+                  <h3 class="col-md-11">
+                    <a href="{{url.name}}">{{ document.0 }}</a>
+                  </h3>   
+                  <div class="col-md-1 showdetails">
+                    <a href="{% url 'detail' document.0.id %}">
+                      <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </a>
+                  </div>                
+                {% else %}
+                  <div class="col-md-12"><a href="{{url.name}}">{{url.name}}</a></div>
+                {% endif %}
+                </div>
+              {% endfor %}
+              <div class="row">
+                <div class="col-md-12"><i>{{ document.0.description.capitalize }}</i></div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-5">Date: {{ document.0.getDate }}</div>
+                <div class="col-md-7"><a target="_blank" href="http://maps.google.com/?q={{document.0.getLocation}}">{{document.0.getLocation}}</a></div>
+              </div>
+              <div class="row">
+                <div class="col-md-5">Genre: {{ document.0.getGenres }}</div>
+                <div class="col-md-7">Artists: {{ document.0.getArtists }}</div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">Rank: {{ document.1|floatformat }}</div>
+              </div>
+              <br>
+            </div>
+          </div>
+         <br>
+      {% endfor %}
+      
+      <nav class="text-center">
+        <ul class="pagination">
+          <li><a href="?q={{query}}&p={{prev}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+          {% for index in pages %}
+            {% if index == page %}
+              <li class="active"><a href="#">{{index}}<span class="sr-only">(current)</span></a></li>
+            {% else %}
+              <li><a href="?q={{query}}&p={{index}}">{{index}}</a></li>
+            {% endif %}
+          {% endfor %}
+          <li><a href="?q={{query}}&p={{next}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+      </nav>
+    {% else %}
+      <br>
+      <br>
+      <div class="text-center">No results found.</div>       
+    {% endif %}
+      
+    </div>
+  </body>
+</html>
