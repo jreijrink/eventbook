@@ -8,131 +8,239 @@ from mining.duplication import findDuplicate
 import urllib.request
 from bs4 import BeautifulSoup
 
-def findDocuments():#location,url,Sname):
-#读入对应网站所有链接，并保存到对应txt文档内
-    return
-#     if (url.split('.')[1]=='eventful'):   
-#         request=urllib.request.Request('http://'+location+url)
-#         response = urllib.request.urlopen(request, timeout=30)
-#         #抓取页面内容
-#         soup = BeautifulSoup(response.read(),"html5lib")     
-#         s=soup.find(attrs={"class": "results-count"}).string.split()[0]
-#         endpage= int((int(s.split(',')[0])*1000+int(s.split(',')[1]))/15)
-#         Sname='eventful\\'+Sname
-#         ft=open(Sname,'w')
-#         beginpage = 1    
-#         for i in range(beginpage,endpage+1):
-#             request1=urllib.request.Request('http://'+location+url+str(i))
-#             response1 = urllib.request.urlopen(request1, timeout=5)
-#             soup1 = BeautifulSoup(response1.read(),"html5lib")
-#             #eventful 链接读入
-#             for a in soup1.find_all('a'):
-#                 if 'data-ga-label' in a.attrs:
-#                     if a['data-ga-label'] == 'Event Title Link':
-#                         print (a['href'])
-#                         request2 = urllib.request.Request(a['href'])
-#                         response2 = urllib.request.urlopen(request2)
-#                         soup2 = BeautifulSoup(response2.read(),"html5lib")
-#                         document = NewDocument()
-#                         title = ''
-#                         for span in soup2.h1.find_all('span'):
-#                             title += span.text
-#                         document.title = title
-#                         eventdata=''
-#                         for event in soup2.find_all(attrs={"itemprop": "startDate"}):
-#                             eventdata += event.text
-#                         document.date = eventdata
-#                         document.location = soup2.h6.a.String
-#                         document.description = soup2.find(attrs={"class": "section-block description"}).p.string
-#                         document.artists.append=(soup2.find(attrs={"itemprop": "performer"}).span.string)
-#                         link=soup2.find(attrs={"itemprop": "performer"}).a['href']
-#                         request3 = urllib.request.Request(link)
-#                         response3 = urllib.request.urlopen(request3)
-#                         soup3 = BeautifulSoup(response3.read(),"html5lib")
-#                         document.genres.append(soup3.h5.string)
-#                         document.tags.append("tag1")
-#                         document.tags.append("tag2")
-#                         document.tags.append("tag3")
-#                         document.urls.append(a['href'])
-#                         document.imageUrls.append(soup3.find(attrs={"class": "image-viewer-open"}).img['src'])
-#                         document.description = decomposeDocument(document.description);
-#                         document = multiLabelClassification(document);
-#                         document = clusterDocument(document);
-#                         document = findDuplicate(document);
-#                         document.save()
-#                         ft.write(a['href']+'\n')
-#                         ft.close()
-#     else: 
-#         if (url.split('.')[1]=='songkick'):
-# 
-#                 url1=url
-#                 ft=open(Sname,'w')
-#                 request1=urllib.request.Request(url1)
-#                 response1 = urllib.request.urlopen(request1, timeout=5)
-#                 #抓取页面内容
-#                 soup1 = BeautifulSoup(response1.read(),"html5lib")
-#                 endpage=int(soup1.find(attrs={"class":"next_page"}).previous_sibling.previous_sibling.string)
-#                 beginpage=1
-#                 for i in range(beginpage,endpage+1):
-#                     request2=urllib.request.Request(url1+'?page='+str(i))
-#                     response2 = urllib.request.urlopen(request2, timeout=5)
-#                     soup2 = BeautifulSoup(response2.read(),"html5lib")
-#                     for a1 in soup2.find_all(attrs={"class":'artists summary'}):
-#                         print ('http://www.songkick.com'+a1.a['href'])
-#                         link='http://www.songkick.com'+a1.a['href']
-#                         request3=urllib.request.Request(link)
-#                         response3 = urllib.request.urlopen(request3, timeout=5)
-#                         soup3 = BeautifulSoup(response3.read(),"html5lib")
-#                         document = NewDocument()
-#                         document.title = soup3.h1.span.string
-#                         document.description = soup3.find(attrs={"class":'additional-details-container'}).p.string
-#                         
-#                         document.date = soup3.h5.string
-#                         Loc=''
-#                         for span in soup2.find_all(attrs={"class":'location'}):
-#                             Loc += span.text
-#                         document.location = Loc
-#                         performer=''
-#                         for span in soup2.find_all(attrs={"class":'headliner'}):
-#                             performer += span.text                        
-#                         document.artists.append=(performer)
-#                         document.genres.append("")
-#                         document.tags.append("tag1")
-#                         document.tags.append("tag2")
-#                         document.tags.append("tag3")
-#                         document.urls.append(link)
-#                         document.imageUrls.append(soup3.find(attrs={"class": "profile-picture-wrapper"}).img['src'])
-#                         document.description = decomposeDocument(document.description);
-#                         document = multiLabelClassification(document);
-#                         document = clusterDocument(document);
-#                         document = findDuplicate(document);
-#                         document.save()
-# #                         print (a1.strong.string)
-#                         ft.write('http://www.songkick.com'+a1.a['href']+'\n')
-#                 ft.close()
+def findDocuments():
+    
+    urlEventfull = '.eventful.com/events?q=*&ga_search=*&ga_type=events&sort_order=Popularity&page_number='
+    urlSongKick = 'http://www.songkick.com/session/filter_metro_area'
+    
+    request = urllib.request.Request(urlSongKick)
+    response = urllib.request.urlopen(request, timeout=5)
+    
+    soup = BeautifulSoup(response.read(),"html5lib")
+    eventLinks = soup.find(attrs={"class": "component popular-metro-areas"})
+    
+    eventfulLinks = set()
+    songkickLinks = set()
+    
+    locationSize = len(eventLinks.find_all('a'))
+    
+    for index, link in enumerate(eventLinks.find_all('a')):
+        
+        #TEMP FOR TESTING
+        if index > 4:
+            break
+        
+        location= link.string.split(',')[0].replace(' ','').lower()
+        
+        if (location=='sfbayarea'):
+            location='sanfrancisco'
+        else:
+            if (location=='newyork'):
+                location='newyorkcity'
+        
+        urlSongKick='http://www.songkick.com'+link['href']
+        
+        print("searching eventful links for " + location + " " + str(index) + "/" + str(locationSize))
+        eventfulLinks.update(getEventfulLinks(location, urlEventfull))
+        
+        print("searching songkick links for " + location + " " + str(index) + "/" + str(locationSize))
+        songkickLinks.update(getSongkickLinks(location, urlSongKick))
+        
+        totalLink = len(eventfulLinks) + len(songkickLinks)
+        print("found " + str(totalLink) + " links so far. (" + str(len(eventfulLinks)) + " EVENTFUL, " + str(len(songkickLinks)) + " SONGKICK)")
+    
+    totalLink = len(eventfulLinks) + len(songkickLinks)
+    print("Found all " + str(totalLink) + " link, now start processing them")
+    
+    for index, eventLink in enumerate(eventfulLinks):
+        doc = getEventfulDocument(eventLink)
+        processAndSaveDoc(doc)
+        print("Processed " + str(index) + " / " + str(len(eventfulLinks)) + " links for eventful (" + str(index) + " / " + str(totalLink) + " total)")
+        
+    for index, eventLink in enumerate(songkickLinks):
+        doc = getSongkickDocument(eventLink)
+        processAndSaveDoc(doc)
+        print("Processed " + str(index) + " / " + str(len(songkickLinks)) + " links for eventful (" + str(index + len(eventfulLinks)) + " / " + str(totalLink) + " total)")
 
+def getEventfulLinks(location, url): 
+    
+    links = set()
+    
+    try:
+        request = urllib.request.Request('http://'+location + url)
+        response = urllib.request.urlopen(request, timeout=30)
+    
+        soup = BeautifulSoup(response.read(),"html5lib")     
+        results = soup.find(attrs={"class": "results-count"}).string.split()[0]
+        
+        endpage= int((int(results.split(',')[0])*1000+int(results.split(',')[1]))/15)
+        beginpage = 1    
+        
+        #TEMP FOR TESTING
+        endpage = min(2, endpage)
+        
+        for i in range(beginpage, endpage + 1):
+            try:
+                print("Processing page " + str(i) + "/" + str(endpage))
+                    
+                pageRequest = urllib.request.Request('http://' + location + url + str(i))
+                pageResponse = urllib.request.urlopen(pageRequest, timeout=5)
+                pages = BeautifulSoup(pageResponse.read(), "html5lib")
+        
+                for page in pages.find_all('a'):
+                    if 'data-ga-label' in page.attrs and page['data-ga-label'] == 'Event Title Link':
+                        links.add(page['href'])
+            except:
+                print("An ERROR occured for this page!")
+    except:
+        print("An ERROR occured for this location!")
+        
+    return links
 
-
-# 
-# if __name__ == "__main__":  
-#     url = '.eventful.com/events?q=*&ga_search=*&ga_type=events&sort_order=Popularity&page_number='
-#     url1= 'http://www.songkick.com/session/filter_metro_area'
-#     request=urllib.request.Request(url)
-#     response = urllib.request.urlopen(request, timeout=5)
-#     #抓取页面内容
-#     soup = BeautifulSoup(response.read(),"html5lib")  
-#     s=soup.find(attrs={"class": "component popular-metro-areas"})
-#     for a in s.find_all('a'):
-#         location=a.string.split(',')[0].replace(' ','').lower()
-#         if (location=='sfbayarea'):
-#             location='sanfrancisco'
-#         else:
-#             if (location=='newyork'):
-#                 location='newyorkcity'
-#         Sname=url.split('.')[1]+'\\'+location+'.txt'
-# #         Sname=url1.split('.')[1]+'\\'+location+'.txt'
-#         url1='http://www.songkick.com'+a['href']
-#         findDocuments(location,url,Sname)
-# #         findDocuments(lpcation,url1,Sname)
-#         
-
+def getSongkickLinks(location, url):
+    
+    links = set()
+    
+    try:
+        request = urllib.request.Request(url)
+        response = urllib.request.urlopen(request, timeout=5)
+    
+        soup = BeautifulSoup(response.read(), "html5lib")
+        
+        endpage = int(soup.find(attrs={"class":"next_page"}).previous_sibling.previous_sibling.string)
+        beginpage = 1
+        
+        #TEMP FOR TESTING
+        endpage = min(2, endpage)
+        
+        for i in range(beginpage, endpage + 1):  
+            try:
+                print("Processing page " + str(i) + "/" + str(endpage))
+                
+                pageRequest = urllib.request.Request(url + '?page=' + str(i))
+                pageResponse = urllib.request.urlopen(pageRequest, timeout=5)
+                pages = BeautifulSoup(pageResponse.read(), "html5lib")
+                
+                for page in pages.find_all(attrs={"class":'artists summary'}):
+                    link = 'http://www.songkick.com' + page.a['href']
+                    links.add(link)
+            except:
+                print("An ERROR occured for this page!")
+            
+    except:
+        print("An ERROR occured for this location!")
+        
+    return links
+    
+def getEventfulDocument(link):
+    try:
+        eventRequest = urllib.request.Request(link)
+        eventResponse = urllib.request.urlopen(eventRequest)
+        eventSoup = BeautifulSoup(eventResponse.read(), "html5lib")
+        
+        document = NewDocument()
+        
+        title = ''
+        titleContainer = eventSoup.h1.find_all('span')
+        if titleContainer:
+            for span in titleContainer:
+                title += str(span.text)
+        document.title = title
+        
+        eventdate=''
+        dateContainer = eventSoup.find_all(attrs={"itemprop": "startDate"})
+        if dateContainer:
+            for event in dateContainer:
+                eventdate += str(event.text)
+        document.date = eventdate
+        
+        location = ''
+        locationContainer = eventSoup.find_all(attrs={"itemprop": "location"})
+        if locationContainer:
+            for span in locationContainer:
+                location += span.p.text
+        document.location = location
+                
+        description = eventSoup.find(attrs={"class": "section-block description"})
+        if description:
+            document.description = description.p.string
+        
+        artistContainer = eventSoup.find(attrs={"itemprop": "performer"})
+        if artistContainer:
+            document.artists.append(artistContainer.span.string)
+        
+            artistLink = artistContainer.a['href']
+            artistRequest = urllib.request.Request(artistLink)
+            artistResponse = urllib.request.urlopen(artistRequest)
+            artistSoup = BeautifulSoup(artistResponse.read(), "html5lib")
+            
+            document.genres.append(artistSoup.h5.string)
+            
+            image = artistSoup.find(attrs={"class": "image-viewer-open"})
+            if image:
+                document.imageUrls.append(image.img['src'])
+    
+        document.urls.append(link)
+        return document
+    
+    except:
+        print("An ERROR occured for this document!")
+    
+def getSongkickDocument(link):
+    try:
+        eventRequest = urllib.request.Request(link)
+        eventResonse = urllib.request.urlopen(eventRequest, timeout=5)
+        eventSoup = BeautifulSoup(eventResonse.read(), "html5lib")
+        
+        document = NewDocument()
+        
+        title = ''
+        titleContainer = eventSoup.h1.span.find_all('a')
+        if titleContainer:
+            for a in titleContainer:
+                title += str(a.text)
+        document.title = title
+                
+        details = ''
+        detailsContainer = eventSoup.find(attrs={"class":'additional-details-container'})
+        if detailsContainer:
+            for p in detailsContainer:
+                details += str(p.string)
+        document.description = details
+        
+        document.date = eventSoup.h5.string
+        
+        location = ''
+        locationContainer = eventSoup.find_all("div", { "class":'location'})
+        if locationContainer:
+            for span in locationContainer:
+                location += str(span.text)
+        document.location = location
+        
+        performer = ''
+        artistContainer = eventSoup.find_all(attrs={"class":'line-up'})
+        if artistContainer:
+            for span in artistContainer:
+                performer += str(span.a.text)                                    
+        document.artists.append(performer)
+    
+        image = eventSoup.find(attrs={"class": "profile-picture-wrapper"})
+        if image:
+            document.imageUrls.append(image.img['src'])
+        
+        document.urls.append(link)
+        return document
+    except:
+        print("An ERROR occured for this document!")
+    
+def processAndSaveDoc(document):   
+    try:
+        if document:
+            document.description = decompose(document.description);
+            document = multiLabelClassification(document);
+            document = clusterDocument(document);
+            document = findDuplicate(document);
+            
+            document.save()
+    except:
+        print("An ERROR occured in processing!")
