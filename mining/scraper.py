@@ -133,7 +133,7 @@ def getSongkickLinks(location, url):
     return links
     
 def getEventfulDocument(link):
-    try:
+    #try:
         eventRequest = urllib.request.Request(link)
         eventResponse = urllib.request.urlopen(eventRequest)
         eventSoup = BeautifulSoup(eventResponse.read(), "html5lib")
@@ -165,6 +165,13 @@ def getEventfulDocument(link):
         if description:
             document.description = description.p.string
         
+        genreContainer = eventSoup.find(attrs={"class": "section-block description"})
+        if genreContainer:
+            last_p = None
+            for last_p in genreContainer.findAll('p'):pass
+            if last_p:
+                document.genres.append(last_p.a.text)
+            
         artistContainer = eventSoup.find(attrs={"itemprop": "performer"})
         if artistContainer:
             document.artists.append(artistContainer.span.string)
@@ -176,15 +183,15 @@ def getEventfulDocument(link):
             
             document.genres.append(artistSoup.h5.string)
             
-            image = artistSoup.find(attrs={"class": "image-viewer-open"})
-            if image:
-                document.imageUrls.append(image.img['src'])
-    
+        image = eventSoup.find(attrs={"class": "image-viewer-open"})
+        if image:
+            document.imageUrls.append(image.img['src'])
+
         document.urls.append(link)
         return document
     
-    except:
-        print("An ERROR occured for this document!")
+    #except:
+    #    print("An ERROR occured for this document!")
     
 def getSongkickDocument(link):
     try:
