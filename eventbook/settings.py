@@ -123,11 +123,11 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
-            'handlers':['console'],
-            'propagate': True,
-            'level':'DEBUG',
-        },
+        #'django': {
+        #    'handlers':['console'],
+        #    'propagate': True,
+        #    'level':'DEBUG',
+        #},
         'eventbook': {
             'handlers': ['console'],
             'level': 'DEBUG',
