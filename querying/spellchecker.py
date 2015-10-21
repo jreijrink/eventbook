@@ -32,8 +32,6 @@ def correct(word):
     candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
     return max(candidates, key=NWORDS.get)
 
-
-
 def checkSpelling(query):
     query_decomposed = query.split(" ")
     for i in range(len(query_decomposed)):
