@@ -57,7 +57,12 @@
       {% for document in documents %}
         <div class="row resultrow">
             <div class="col-md-2 imagecontainer">
-              <img src="{{ document.0.imageUrls.first}}" class="img-rounded" width="100%">
+              <div class="imageCombiner">
+                {% if document.0.imageUrls.first %}
+                  <img src="{{ document.0.imageUrls.first }}" class="img-rounded eventImage" width="100%">
+                {% endif %}
+                <img src="/static/img/empty.png" class="img-rounded defaultImage" width="100%">
+              </div>
             </div>
             <div class="col-md-10">
               {% for url in document.0.urls.all %}
@@ -82,7 +87,7 @@
               <br>
               <div class="row">
                 <div class="col-md-5">Date: {{ document.0.getDate }}</div>
-                <div class="col-md-7"><a target="_blank" href="http://maps.google.com/?q={{document.0.getLocation}}">{{document.0.getLocation}}</a></div>
+                <div class="col-md-7">Location: <a target="_blank" href="http://maps.google.com/?q={{document.0.getLocation}}">{{document.0.getLocation}}</a></div>
               </div>
               <div class="row">
                 <div class="col-md-5">Genre: {{ document.0.getGenres }}</div>
@@ -99,7 +104,8 @@
       
       <nav class="text-center">
         <ul class="pagination">
-          <li><a href="?q={{query}}&p={{prev}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+          <li><a href="?q={{query}}&p=1" aria-label="Start"><span aria-hidden="true">&laquo;</span></a></li>
+          <li><a href="?q={{query}}&p={{prev}}" aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
           {% for index in pages %}
             {% if index == page %}
               <li class="active"><a href="#">{{index}}<span class="sr-only">(current)</span></a></li>
@@ -107,9 +113,14 @@
               <li><a href="?q={{query}}&p={{index}}">{{index}}</a></li>
             {% endif %}
           {% endfor %}
-          <li><a href="?q={{query}}&p={{next}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+          <li><a href="?q={{query}}&p={{next}}" aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+          <li><a href="?q={{query}}&p={{totalpages}}" aria-label="End"><span aria-hidden="true">&raquo;</span></a></li>
         </ul>
       </nav>
+      
+      <div class="row">
+        <p class="navbar-text text-center col-md-12">{{ results }} results / {{ totalpages }} pages</p>
+      </div>
     {% else %}
       <br>
       <br>

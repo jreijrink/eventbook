@@ -16,7 +16,7 @@ logger = logging.getLogger("eventbook")
 def retrieveFromIndex(query, page): 
     cache = retrieveFromCache(query) 
    
-    if False:#(cache is not None) and page == 1:
+    if (cache is not None) and page == 1:
         logger.debug('Cache contained results for this query!') 
         return cache 
     else: 
@@ -26,11 +26,7 @@ def retrieveFromIndex(query, page):
         
         Dicttfidf={}  #save tfidf
         Dicttf={}   #save tf
-        
-        #for document in Document.objects.all():
-        #    Dicttf[document] = 0.0
-        #    Dicttfidf[document] = 0.0
-                 
+                         
         words = query.split()#getTokensFromText(query)
         
         for word in words: 
@@ -38,7 +34,8 @@ def retrieveFromIndex(query, page):
             #tokens = Token.objects.filter(name__iexact=word)
             #tokens = Token.objects.filter(name__contains=word) 
             
-            for token in tokens:                 
+            for token in tokens:  
+                    
                 titleResults = token.title_tokens.all()
                 for document in titleResults:
                     incement_set(Dicttf, document, 1)                            
@@ -58,13 +55,8 @@ def retrieveFromIndex(query, page):
                 for document in tagResults:
                     incement_set(Dicttf, document, 1)
                  
-                chainedResults = chain(titleResults, dateResults, locationResults, genreResults, artistResults, tagResults) 
+                documents = list(set(chain(titleResults, dateResults, locationResults, genreResults, artistResults, tagResults)))
  
-                documents=[]
-                for document in chainedResults: 
-                    if document not in documents: 
-                        documents.append(document)
-
                 df = len(documents)
                 idf = math.log((docNumber / df), 2)
                 
@@ -77,10 +69,11 @@ def retrieveFromIndex(query, page):
         resultSize = len(ranklist)
         pageResults = ranklist[(page - 1) * eventbook_settings.PAGE_SIZE : page * eventbook_settings.PAGE_SIZE ]
         
+        results = (pageResults, resultSize)
         if page == 1:
-            saveToCache(query, pageResults)
+            saveToCache(query, results)
         
-        return (pageResults, resultSize)
+        return results
 
 def incement_set(dict_set, key, incemental):
     if key in dict_set:

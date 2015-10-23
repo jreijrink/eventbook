@@ -150,7 +150,7 @@ class Url(models.Model):
 class Document(models.Model):
     title = models.ManyToManyField(Token, related_name='title_tokens', through='TitleOrder')
     
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000, null=True)
     
     date = models.ManyToManyField(Token, related_name='date_tokens', through='DateOrder')
     location = models.ManyToManyField(Token, related_name='location_tokens', through='LocationOrder')
@@ -172,10 +172,10 @@ class Document(models.Model):
         return string.capwords(' '.join([str(location.name) for location in self.location.order_by("location_tokens")]))
     
     def getGenres(self):
-        return string.capwords(' / '.join([str(genres.name) for genres in self.genres.order_by("genres_tokens")]))
+        return string.capwords(' '.join([str(genres.name) for genres in self.genres.order_by("genres_tokens")]))
     
     def getArtists(self):
-        return string.capwords(' / '.join([str(artists.name) for artists in self.artists.order_by("artist_tokens")]))
+        return string.capwords(' '.join([str(artists.name) for artists in self.artists.order_by("artist_tokens")]))
     
     
 class TitleOrder(models.Model):
