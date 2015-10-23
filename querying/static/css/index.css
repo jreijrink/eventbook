@@ -1,6 +1,4 @@
-.container {
-  padding-top: 100px;
-}
+
 .stylish-input-group .input-group-addon{
     background: white !important; 
 }
@@ -32,14 +30,32 @@
 .resultrow {
   background: #f4f4f4;
 }
-.container {
-  padding-top: 0px; 
+
+.homecontainer {
+  padding-top: 100px;
 }
 
 
 .imagecontainer {
     padding-top: 25px;
     padding-bottom: 25px;
+}
+
+.imageCombiner {
+  position: relative;  
+  width: 165px;
+  height: 165px;
+}
+.defaultImage, .eventImage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.eventImage {
+  z-index: 10;
 }
 
 .showdetails {  

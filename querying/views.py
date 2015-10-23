@@ -39,7 +39,10 @@ def search(request):
     pages = ceil(results[1] / eventbook_settings.PAGE_SIZE)   
     processtime = time.time() - start
     
-    context = {'documents': results[0], 'query': original, 'extendedquery': query, 'page': page, 'pages': range(1, pages + 1), 'prev': max(1, page - 1), 'next': min(pages, page + 1), 'processtime': round(processtime, 4)}
+    pagestart = max(1, page - 5)
+    pageend = min(pages, page + 5)
+        
+    context = {'documents': results[0], 'query': original, 'extendedquery': query, 'results': results[1], 'page': page, 'totalpages': pages, 'pages': range(pagestart, pageend + 1), 'prev': max(1, page - 1), 'next': min(pages, page + 1), 'processtime': round(processtime, 4)}
     
     return render(request, 'querying/search.html', context)
 
