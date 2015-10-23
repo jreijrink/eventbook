@@ -1,12 +1,12 @@
-from common.models import NewDocument
+import urllib.request
 
+from bs4 import BeautifulSoup
+
+from common.models import NewDocument
 from mining.decomposition import decompose
 from mining.classifier import multiLabelClassification
-from mining.clustering import clusterDocument
+from clustering.clustering import clusterDocument
 from mining.duplication import findDuplicate
-
-import urllib.request
-from bs4 import BeautifulSoup
 
 def findDocuments():
     
@@ -27,7 +27,7 @@ def findDocuments():
     for index, link in enumerate(eventLinks.find_all('a')):
         
         #TEMP FOR TESTING
-        if index > 4:
+        if index > 0:
             break
         
         location= link.string.split(',')[0].replace(' ','').lower()
@@ -77,7 +77,7 @@ def getEventfulLinks(location, url):
         beginpage = 1    
         
         #TEMP FOR TESTING
-        endpage = min(2, endpage)
+        endpage = min(1, endpage)
         
         for i in range(beginpage, endpage + 1):
             try:
@@ -111,7 +111,7 @@ def getSongkickLinks(location, url):
         beginpage = 1
         
         #TEMP FOR TESTING
-        endpage = min(2, endpage)
+        endpage = min(0, endpage)
         
         for i in range(beginpage, endpage + 1):  
             try:
@@ -241,7 +241,7 @@ def getSongkickDocument(link):
         print("An ERROR occured for this document!")
     
 def processAndSaveDoc(document):   
-    try:
+    # try:
         if document:
             document.description = decompose(document.description);
             document = multiLabelClassification(document);
@@ -249,5 +249,5 @@ def processAndSaveDoc(document):
             document = findDuplicate(document);
             
             document.save()
-    except:
-        print("An ERROR occured in processing!")
+    # except:
+    #     print("An ERROR occured in processing!")
