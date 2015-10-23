@@ -12,16 +12,20 @@ def doInitialClustering(documents):
 
 def buildTDIDF(documents):
     docs = documentIterator(documents)
+    print(str(len(documents)) + " documents used to learn cluster! \n")
+    
     tfidf_vectorizer = TfidfVectorizer(max_df=1.0, max_features=200000,
                                      min_df=0.0, stop_words='english',
                                      use_idf=True, ngram_range=(1,3))
 
     tfidf_matrix = tfidf_vectorizer.fit_transform(docs) #fit the vectorizer to synopses
 
-    #print(tfidf_matrix.shape)
+    print(str(tfidf_matrix.shape) + " (documents, features) in the TFIDF matrix \n")
 
-    #terms = tfidf_vectorizer.get_feature_names()
-
+    #terms = len(tfidf_vectorizer.get_feature_names())
+    
+    #print(str(terms) + "\n")
+    
     #from sklearn.metrics.pairwise import cosine_similarity
     #dist = 1 - cosine_similarity(tfidf_matrix)
     return tfidf_matrix
@@ -34,7 +38,16 @@ def initialClustering(tfidf_matrix):
 
     km.fit(tfidf_matrix)
 
-    #clusters = km.labels_.tolist()
+    clusters = km.cluster_centers_.tolist()
+    
+    number = 1
+    for cluster in clusters:
+        count = 0
+        for featureAxis in cluster:
+            if featureAxis > 0:
+                count += 1
+        print("Cluser " + str(number) + ": " + str(count) + " feature axis \n")
+        number += 1
 
 #Use this
 def clusterDocument(document):
