@@ -46,7 +46,7 @@ def initialClustering(tfidf_matrix):
         for featureAxis in cluster:
             if featureAxis > 0:
                 count += 1
-        print("Cluser " + str(number) + ": " + str(count) + " feature axis \n")
+        print("Cluster " + str(number) + ": " + str(count) + " feature axis \n")
         number += 1
 
 #Use this
