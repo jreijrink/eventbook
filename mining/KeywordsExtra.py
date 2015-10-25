@@ -12,12 +12,15 @@ def KeywordsExtra(text):
     text=' '.join([lem.lemmatize(i) for i in words])
     
     ## extract keywords, output with scores  
-    if lentext<100:
-        rake1=Rake("C:/wamp/www/eventbook/mining/SmartStoplist.txt",3,3,1)
-        tags=rake1.run(text)
+    if lentext<10: ## when the description is too short we don't need keywords
+        tags=None
     else:
-        rake2=Rake("C:/wamp/www/eventbook/mining/SmartStoplist.txt",3,3,2)
-        tags=rake2.run(text)
+        if lentext<50:
+            rake1=Rake("C:/wamp/www/eventbook/mining/SmartStoplist.txt",3,3,1)
+            tags=rake1.run(text)
+        else:
+            rake2=Rake("C:/wamp/www/eventbook/mining/SmartStoplist.txt",3,3,2)
+            tags=rake2.run(text)
     return(tags)
   
              
