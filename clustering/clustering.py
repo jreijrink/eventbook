@@ -12,7 +12,7 @@ def doInitialClustering(documents):
 
 def buildTDIDF(documents):
     docs = documentIterator(documents)
-    print(str(len(documents)) + " documents used to learn cluster! \n")
+    #print(str(len(documents)) + " documents used to learn cluster! \n")
     
     global tfidf_vectorizer
     tfidf_vectorizer = TfidfVectorizer(max_df=1.0, max_features=200000,
@@ -21,7 +21,7 @@ def buildTDIDF(documents):
 
     tfidf_matrix = tfidf_vectorizer.fit_transform(docs) #fit the vectorizer to synopses
 
-    print(str(tfidf_matrix.shape) + " (documents, features) in the TFIDF matrix \n")
+    #print(str(tfidf_matrix.shape) + " (documents, features) in the TFIDF matrix \n")
 
     #terms = len(tfidf_vectorizer.get_feature_names())
     
@@ -47,7 +47,7 @@ def initialClustering(tfidf_matrix):
         for featureAxis in cluster:
             if featureAxis > 0:
                 count += 1
-        print("Cluster " + str(number) + ": " + str(count) + " feature axis \n")
+        #print("Cluster " + str(number) + ": " + str(count) + " feature axis \n")
         number += 1
 
 #Use this
@@ -58,7 +58,7 @@ def clusterDocument(document):
         documents.append(document)
         docVector = tfidf_vectorizer.transform(documentIterator(documents))
         prediction = km.predict(docVector)
-        print("Document belongs to cluser: " + str(prediction))
+        #print("Document belongs to cluser: " + str(prediction))
     return document
 
 class documentIterator:

@@ -28,19 +28,19 @@ def termsearch(terms): # Searches simple inverted index
                   set(texts.keys()))
  
 texts, words = parsetexts()
-print('\nTexts')
+#print('\nTexts')
 pp(texts)
-print('\nWords')
+#print('\nWords')
 pp(sorted(words))
  
 invindex = {word:set(txt
                         for txt, wrds in texts.items() if word in wrds)
             for word in words}
-print('\nInverted Index')
+#print('\nInverted Index')
 pp({k:sorted(v) for k,v in invindex.items()})
  
 terms = ["what", "is", "it"]
-print('\nTerm Search for: ' + repr(terms))
+#print('\nTerm Search for: ' + repr(terms))
 pp(sorted(termsearch(terms)))
 
 

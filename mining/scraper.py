@@ -40,27 +40,27 @@ def findDocuments():
         
         urlSongKick='http://www.songkick.com'+link['href']
         
-        print("searching eventful links for " + location + " " + str(index) + "/" + str(locationSize))
+        #print("searching eventful links for " + location + " " + str(index) + "/" + str(locationSize))
         eventfulLinks.update(getEventfulLinks(location, urlEventfull))
         
-        print("searching songkick links for " + location + " " + str(index) + "/" + str(locationSize))
+        #print("searching songkick links for " + location + " " + str(index) + "/" + str(locationSize))
         songkickLinks.update(getSongkickLinks(location, urlSongKick))
         
         totalLink = len(eventfulLinks) + len(songkickLinks)
-        print("found " + str(totalLink) + " links so far. (" + str(len(eventfulLinks)) + " EVENTFUL, " + str(len(songkickLinks)) + " SONGKICK)")
+        #print("found " + str(totalLink) + " links so far. (" + str(len(eventfulLinks)) + " EVENTFUL, " + str(len(songkickLinks)) + " SONGKICK)")
     
     totalLink = len(eventfulLinks) + len(songkickLinks)
-    print("Found all " + str(totalLink) + " link, now start processing them")
+    #print("Found all " + str(totalLink) + " link, now start processing them")
     
     for index, eventLink in enumerate(eventfulLinks):
         doc = getEventfulDocument(eventLink)
         processAndSaveDoc(doc)
-        print("Processed " + str(index) + " / " + str(len(eventfulLinks)) + " links for eventful (" + str(index) + " / " + str(totalLink) + " total)")
+        #print("Processed " + str(index) + " / " + str(len(eventfulLinks)) + " links for eventful (" + str(index) + " / " + str(totalLink) + " total)")
         
     for index, eventLink in enumerate(songkickLinks):
         doc = getSongkickDocument(eventLink)
         processAndSaveDoc(doc)
-        print("Processed " + str(index) + " / " + str(len(songkickLinks)) + " links for eventful (" + str(index + len(eventfulLinks)) + " / " + str(totalLink) + " total)")
+        #print("Processed " + str(index) + " / " + str(len(songkickLinks)) + " links for eventful (" + str(index + len(eventfulLinks)) + " / " + str(totalLink) + " total)")
 
 def getEventfulLinks(location, url): 
     
@@ -81,7 +81,7 @@ def getEventfulLinks(location, url):
         
         for i in range(beginpage, endpage + 1):
             try:
-                print("Processing page " + str(i) + "/" + str(endpage))
+                #print("Processing page " + str(i) + "/" + str(endpage))
                     
                 pageRequest = urllib.request.Request('http://' + location + url + str(i))
                 pageResponse = urllib.request.urlopen(pageRequest, timeout=5)

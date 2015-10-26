@@ -53,7 +53,7 @@ def vcspace(docTexts):    #original text, a set/list
     textNum=len(doclists) # number of rows
     tokenNum=len(tokenlist) # number of columns 
     i=0
-    print(tokenlist)
+    #print(tokenlist)
     
     n=-1
     for list in doclists:
@@ -81,7 +81,7 @@ def vcspace(docTexts):    #original text, a set/list
             for k in range(0,tokenNum):
                 Similarity[m]=Similarity[m]+list1[k]*list2[k]
             Similarity[m]=Similarity[m]/normText1/normText2
-            print(Similarity[m])
+            #print(Similarity[m])
             m+=1
     
     return Similarity

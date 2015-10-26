@@ -9,18 +9,18 @@ from eventbook import settings as eventbook_settings
 
 import re
 import math 
-import logging 
-logger = logging.getLogger("eventbook") 
- 
+
+#import logging 
+#logger = logging.getLogger("eventbook") 
  
 def retrieveFromIndex(query, page): 
     cache = retrieveFromCache(query) 
    
     if (cache is not None) and page == 1:
-        logger.debug('Cache contained results for this query!') 
+        #logger.debug('Cache contained results for this query!') 
         return cache 
     else: 
-        logger.debug('No results in cache') 
+        #logger.debug('No results in cache') 
         
         docNumber = len(Document.objects.all())
         

@@ -5,8 +5,8 @@ from eventbook import settings as eventbook_settings
 
 def findDuplicate(document):
     
-    print("START DUP");
-    print(document.title)
+    #print("START DUP");
+    #print(document.title)
     
     results = []
  
@@ -28,9 +28,9 @@ def findDuplicate(document):
     
     if len(results) > 0:
         document.duplication = findDuplicateInResults(document, results)
-        print(str(document.duplication))
+        #print(str(document.duplication))
     
-    print("END DUP");
+    #print("END DUP");
     return document
 
 def findDuplicateInResults(document, results):
@@ -38,7 +38,7 @@ def findDuplicateInResults(document, results):
         for url in result.urls.all():
             # If the same url -> definitly duplicate
             if url.name in document.urls:
-                print("FOUND DUPLICATE");
+                #print("FOUND DUPLICATE");
                 return result
 
         # Check for overlap in Artist, Genre, Location and Date
@@ -47,7 +47,7 @@ def findDuplicateInResults(document, results):
             hasOverlap(getTokensFromList(document.genres), result.genres.all()) and 
             hasOverlap(getTokensFromList(document.artists), result.artists.all())):
             
-            print("FOUND DUPLICATE");
+            #print("FOUND DUPLICATE");
             return result
     
 def hasOverlap(textSet, tokenSet):
@@ -61,7 +61,7 @@ def hasOverlap(textSet, tokenSet):
         
         overlapPercentage = overlapCount / uniqueCount;
         
-        print("PERCENTAGE: " + str(overlapPercentage))
+        #print("PERCENTAGE: " + str(overlapPercentage))
         
         # Certain amount of overlap is required! Value can be configured in the seetings
         if overlapPercentage >= eventbook_settings.DUPLICATION_LIMIT:

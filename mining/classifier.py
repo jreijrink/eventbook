@@ -6,7 +6,7 @@ from eventbook import settings as eventbook_settings
 from common.tokenizer import getTokensFromText
 
 def multiLabelClassification(document):
-    print("Start classification")
+    #print("Start classification")
     if document.description:
         text = document.description
         
@@ -32,7 +32,7 @@ def multiLabelClassification(document):
             tokens = getTokensFromText(tag[0])
             for token in tokens:
                 document.tags.append(token)
-                print("Found token: " + token)
+                #print("Found token: " + token)
 
-    print("End classification")
+    #print("End classification")
     return document

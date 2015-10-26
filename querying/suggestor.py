@@ -37,7 +37,7 @@ def createSuggestions(query,documents): ## input the original query and relevant
             list.append(0)
     
     i=0
-    print(tokenlist)
+    #print(tokenlist)
     n=-1
     for list in doclists:
         n=n+1
@@ -53,7 +53,7 @@ def createSuggestions(query,documents): ## input the original query and relevant
             score[tokenlist[i]]=score[tokenlist[i]]+0.75*rowlists[j][i]
     rankwords = sorted(score.items(), key = lambda map : map[1], reverse=True)
     
-    print(rankwords)
+    #print(rankwords)
     
     ## load stopwords
     stopwords=open(eventbook_settings.PROJECT_ROOT + "common/SmartStoplist.txt")
@@ -62,12 +62,12 @@ def createSuggestions(query,documents): ## input the original query and relevant
         if line.strip()[0:1] != "#":
             for word in line.split():  # in case more than one per line
                 stop_words.append(word) 
-    print(stop_words) 
+    #print(stop_words) 
     
     ## generate new query
     ## find words with score bigger than 1.5 and don't show in the original query and the stop_words.
     newrank=[]
-    print(len(query))
+    #print(len(query))
     for i in range(0,len(tokenlist)-1):
         if rankwords[i][1]>=1.5 and rankwords[i][0] not in query and rankwords[i][0] not in stop_words:
             newrank.append(rankwords[i][0])    
@@ -88,6 +88,6 @@ def createSuggestions(query,documents): ## input the original query and relevant
             if suggestion and suggestion != '' and not any(suggestion in s for s in queryTokens):
                 suggestions.append(suggestion)
             
-    print(suggestions)
+    #print(suggestions)
     
     return suggestions
