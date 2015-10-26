@@ -5,8 +5,9 @@ import sys
 def lemmalist(str):
     syn_set = []
     for synset in wordnet.synsets(str):
-        for item in synset.lemma_names():
-            syn_set.append(item)
+        text = synset.name()
+        head, sep, tail = text.partition('.')
+        syn_set.append(head)
     return syn_set
 
 # Returns a string containing all synonyms for the words in an input string.
