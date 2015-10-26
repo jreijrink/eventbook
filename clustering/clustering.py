@@ -14,6 +14,7 @@ def buildTDIDF(documents):
     docs = documentIterator(documents)
     print(str(len(documents)) + " documents used to learn cluster! \n")
     
+    global tfidf_vectorizer
     tfidf_vectorizer = TfidfVectorizer(max_df=1.0, max_features=200000,
                                      min_df=0.0, stop_words='english',
                                      use_idf=True, ngram_range=(1,3))
@@ -52,8 +53,13 @@ def initialClustering(tfidf_matrix):
 #Use this
 def clusterDocument(document):
     global km
-    prediction = km.predict(document)
-    return prediction
+    if document.description != None:
+        documents = list()
+        documents.append(document)
+        docVector = tfidf_vectorizer.transform(documentIterator(documents))
+        prediction = km.predict(docVector)
+        print("Document belongs to cluser: " + str(prediction))
+    return document
 
 class documentIterator:
     def __init__(self, documents):
