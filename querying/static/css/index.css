@@ -67,3 +67,17 @@
   color: #777;
   font-size: 14px;
 }
+
+.suggestionsContainer {
+  background: #f4f4f4;  
+}
+
+.suggestionsHeader {
+  color: #777;
+  font-size: 22px;  
+}
+
+.suggestion {
+  padding-bottom: 10px;
+}
+

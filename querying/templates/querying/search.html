@@ -101,25 +101,41 @@
           </div>
          <br>
       {% endfor %}
+    </div>
       
-      <nav class="text-center">
-        <ul class="pagination">
-          <li><a href="?q={{query}}&p=1" aria-label="Start"><span aria-hidden="true">&laquo;</span></a></li>
-          <li><a href="?q={{query}}&p={{prev}}" aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
-          {% for index in pages %}
-            {% if index == page %}
-              <li class="active"><a href="#">{{index}}<span class="sr-only">(current)</span></a></li>
-            {% else %}
-              <li><a href="?q={{query}}&p={{index}}">{{index}}</a></li>
-            {% endif %}
+      {% if suggestions %}
+        <div class="suggestionsContainer container">
+          <div class="row">
+            <h3 class="suggestionsHeader col-md-12">Suggestions</h3>
+          </div>
+          {% for suggestion in suggestions %}
+            <div class="row">
+                <a class="suggestion col-md-12" href="?q={{ query }} {{ suggestion }}">{{ query }} <strong>{{ suggestion }}</strong></a>
+            </div>
           {% endfor %}
-          <li><a href="?q={{query}}&p={{next}}" aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
-          <li><a href="?q={{query}}&p={{totalpages}}" aria-label="End"><span aria-hidden="true">&raquo;</span></a></li>
-        </ul>
-      </nav>
+        </div>
+      {% endif %}
       
-      <div class="row">
-        <p class="navbar-text text-center col-md-12">{{ results }} results / {{ totalpages }} pages</p>
+      <div class="container">
+        <nav class="text-center">
+          <ul class="pagination">
+            <li><a href="?q={{query}}&p=1" aria-label="Start"><span aria-hidden="true">&laquo;</span></a></li>
+            <li><a href="?q={{query}}&p={{prev}}" aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
+            {% for index in pages %}
+              {% if index == page %}
+                <li class="active"><a href="#">{{index}}<span class="sr-only">(current)</span></a></li>
+              {% else %}
+                <li><a href="?q={{query}}&p={{index}}">{{index}}</a></li>
+              {% endif %}
+            {% endfor %}
+            <li><a href="?q={{query}}&p={{next}}" aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+            <li><a href="?q={{query}}&p={{totalpages}}" aria-label="End"><span aria-hidden="true">&raquo;</span></a></li>
+          </ul>
+        </nav>
+        
+        <div class="row">
+          <p class="navbar-text text-center col-md-12">{{ results }} results / {{ totalpages }} pages</p>
+        </div>
       </div>
     {% else %}
       <br>
@@ -127,6 +143,5 @@
       <div class="text-center">No results found.</div>       
     {% endif %}
       
-    </div>
   </body>
 </html>

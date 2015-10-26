@@ -14,8 +14,8 @@ import time
 from django.core.paginator import Page
 
 def index(request):
-    documents = createSuggestions()
-    context = {'suggestions': documents}
+    #documents = createSuggestions()
+    #context = {'suggestions': documents}
     return render(request, 'querying/index.html')
 
 def search(request):
@@ -36,13 +36,15 @@ def search(request):
 
     results = retrieveFromIndex(query, page)
     
+    suggestions = createSuggestions(original, results[0])
+    
     pages = ceil(results[1] / eventbook_settings.PAGE_SIZE)   
     processtime = time.time() - start
     
     pagestart = max(1, page - 5)
     pageend = min(pages, page + 5)
         
-    context = {'documents': results[0], 'query': original, 'extendedquery': query, 'results': results[1], 'page': page, 'totalpages': pages, 'pages': range(pagestart, pageend + 1), 'prev': max(1, page - 1), 'next': min(pages, page + 1), 'processtime': round(processtime, 4)}
+    context = {'documents': results[0], 'query': original, 'extendedquery': query, 'results': results[1], 'page': page, 'totalpages': pages, 'pages': range(pagestart, pageend + 1), 'prev': max(1, page - 1), 'next': min(pages, page + 1), 'processtime': round(processtime, 4), 'suggestions': suggestions}
     
     return render(request, 'querying/search.html', context)
 

@@ -177,6 +177,28 @@ class Document(models.Model):
     def getArtists(self):
         return string.capwords(' '.join([str(artists.name) for artists in self.artists.order_by("artist_tokens")]))
     
+    def getAllTokensAsText(self):
+        tokens = list()
+        for token in self.title.all():
+            if token not in tokens:
+                tokens.append(token.name)
+        for token in self.date.all():
+            if token not in tokens:
+                tokens.append(token.name)
+        for token in self.location.all():
+            if token not in tokens:
+                tokens.append(token.name)
+        for token in self.genres.all():
+            if token not in tokens:
+                tokens.append(token.name)
+        for token in self.artists.all():
+            if token not in tokens:
+                tokens.append(token.name)
+        for token in self.tags.all():
+            if token not in tokens:
+                tokens.append(token.name)
+        return tokens
+    
     
 class TitleOrder(models.Model):
     token = models.ForeignKey(Token)
