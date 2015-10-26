@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 ]
 
-doInitialClustering(Document.objects.all())
+if (len(Document.objects.all())):
+    doInitialClustering(Document.objects.all())
