@@ -182,9 +182,9 @@ class Document(models.Model):
         for token in self.title.all():
             if token not in tokens:
                 tokens.append(token.name)
-        for token in self.date.all():
-            if token not in tokens:
-                tokens.append(token.name)
+        #for token in self.date.all():
+        #    if token not in tokens:
+        #        tokens.append(token.name)
         for token in self.location.all():
             if token not in tokens:
                 tokens.append(token.name)

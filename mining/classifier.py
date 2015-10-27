@@ -28,11 +28,12 @@ def multiLabelClassification(document):
                 rake = Rake(eventbook_settings.PROJECT_ROOT + "common/SmartStoplist.txt",3,3,2)
                 tags = rake.run(text)
                 
-        for tag in tags:
-            tokens = getTokensFromText(tag[0])
-            for token in tokens:
-                document.tags.append(token)
-                #print("Found token: " + token)
+        if tags:
+            for tag in tags:
+                tokens = getTokensFromText(tag[0])
+                for token in tokens:
+                    document.tags.append(token)
+                    #print("Found token: " + token)
 
     #print("End classification")
     return document
