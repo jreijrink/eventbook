@@ -76,7 +76,7 @@ class documentIterator:
             self.i += 1
             if self.documents[i].description == None:
                 return self.__next__()
-            return self.documents[i].description
+            return str(self.documents[i].title) + " " + self.documents[i].description
 
         else:
             raise StopIteration()
