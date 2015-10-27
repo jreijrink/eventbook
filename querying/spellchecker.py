@@ -34,8 +34,14 @@ def correct(word):
 
 def checkSpelling(query):
     query_decomposed = query.split(" ")
-    for i in range(len(query_decomposed)):
-        query_decomposed[i] = correct(query_decomposed[i])
+    query_size = len(query_decomposed)
+    query_checked = ""
+    for i in range(query_size):
+        query_word = query_decomposed[i]
+        spellchecked = correct(query_word)
+        query_checked += query_word + " "
+        if spellchecked != query_word:
+            query_checked += spellchecked + " "
 
-    return " ".join(query_decomposed)
+    return query_checked
 

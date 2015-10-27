@@ -83,7 +83,7 @@ def createSuggestions(query,documents): ## input the original query and relevant
         #  we only generate at most 5 new queries
         for i in range(0,min(k, 5)):
             tokens = getTokensFromText(newrank[i])
-            suggestion = decompose(newrank[i])
+            suggestion = decompose(newrank[i], False)
             #Only add the suggested word if it is not in the query yet
             if suggestion and suggestion != '' and not any(suggestion in s for s in queryTokens):
                 suggestions.append(suggestion)

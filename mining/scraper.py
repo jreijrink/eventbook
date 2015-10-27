@@ -243,7 +243,7 @@ def getSongkickDocument(link):
 def processAndSaveDoc(document):   
     # try:
         if document:
-            document.description = decompose(document.description);
+            document.description = decompose(document.description, False);
             document = multiLabelClassification(document);
             document = clusterDocument(document);
             document = findDuplicate(document);

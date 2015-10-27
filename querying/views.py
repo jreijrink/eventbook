@@ -29,9 +29,9 @@ def search(request):
         page = int(page)
     
     query = checkSpelling(query)
-    query = decompose(query)
+    query = decompose(query, True)
     query = returnSynonyms(query)
-    query = decompose(query)
+    query = decompose(query, True)
     query = applySearchHistory(query)
 
     results = retrieveFromIndex(query, page)

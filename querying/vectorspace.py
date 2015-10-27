@@ -35,7 +35,7 @@ def vcspace(docTexts):    #original text, a set/list
     #n=0
     tokenlist=[]
     for text in docTexts:
-        text=decompose(text)  #every text becomes a list
+        text=decompose(text, False)  #every text becomes a list
         list=getTokensFromText(text)       
         doclists.append(list)
         for token in list:

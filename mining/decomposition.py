@@ -3,7 +3,7 @@ from collections import OrderedDict
 from nltk.stem.wordnet import WordNetLemmatizer
 import re, string
 
-def decompose(text):
+def decompose(text, keepOriginal):
     if text:
         # Case-folding
         text = text.lower();
@@ -24,7 +24,10 @@ def decompose(text):
         # Lemmatization
         lemmatizer = WordNetLemmatizer();
         words = text.split();
-        text = ' '.join([lemmatizer.lemmatize(i) for i in words]);
+        if keepOriginal:
+            text = ' '.join([i + " " + lemmatizer.lemmatize(i) for i in words]);
+        else:            
+            text = ' '.join([lemmatizer.lemmatize(i) for i in words]);
         
         # Remove duplicate words
         text = ' '.join(OrderedDict((word,word) for word in text.split()).keys());
