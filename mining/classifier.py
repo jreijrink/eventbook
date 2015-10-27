@@ -21,7 +21,7 @@ def multiLabelClassification(document):
         if lentext<10: ## when the description is too short we don't need keywords
             tags=None
         else:
-            if lentext<50:
+            if lentext<150:
                 rake = Rake(eventbook_settings.PROJECT_ROOT + "common/SmartStoplist.txt",3,3,1)
                 tags = rake.run(text)
             else:
