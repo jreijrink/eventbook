@@ -6,8 +6,8 @@ import hashlib
 #logger = logging.getLogger("eventbook")
 
 def retrieveFromCache(query):
-    something = hashlib.sha256(query.encode('utf-8'))
-    key = something.hexdigest().encode('utf-8')
+    queryHash = hashlib.sha256(query.encode('utf-8'))
+    key = queryHash.hexdigest().encode('utf-8')
     #logger.debug('Query key for \'' + str(query) + '\': ' + key)
     result = cache.get(key)
     
